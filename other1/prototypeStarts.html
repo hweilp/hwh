@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<title>楼梯</title>
+		<meta charset="utf-8" />
+		<style type="text/css">
+			* {
+				margin: 0px;
+				padding: 0px;
+				list-style: none;
+			}
+			
+			#header {
+				width: 700px;
+				height: 650px;
+				margin: 0 auto;
+				position: relative;
+			}
+			
+			.fl {
+				width: 700px;
+				height: 600px;
+				margin: 0 auto;
+				position: relative;
+			}
+			
+			#footer {
+				width: 700px;
+				height: 600px;
+				margin: 0 auto;
+				position: relative;
+			}
+			
+			#calc {
+				height: 360px;
+				width: 30px;
+				position: fixed;
+				display: none;
+				left: 20px;
+				top: 100px;
+				z-index: 999;
+			}
+			
+			#calc ul li {
+				width: 28px;
+				height: 28px;
+				border: dashed 1px lightgray;
+				text-align: center;
+				line-height: 30px;
+				cursor: pointer;
+				position: relative;
+			}
+			
+			#calc ul li span {
+				display: none;
+				width: 28px;
+				height: 28px;
+				position: absolute;
+				z-index: 1;
+				background-color: red;
+				overflow: hidden;
+				top: 0px;
+				left: 0px;
+				font-size: 12px;
+			}
+			#top{
+				width: 28px;
+				height: 28px;
+				text-align: center;
+				line-height: 30px;
+				cursor: pointer;
+				position: relative;
+			}
+
+			#top i{
+				display: block;
+				display: none;
+				width: 28px;
+				height: 28px;
+				position: absolute;
+				z-index: 1;
+				background-color: red;
+				overflow: hidden;
+				top: 0px;
+				left: 0px;
+				font-size: 12px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="calc">
+			<ul id="ul">
+				<li>1<span>服饰</span></li>
+				<li>2<span>美妆</span></li>
+				<li>3<span>手机</span></li>
+				<li>4<span>家电</span></li>
+				<li>5<span>数码</span></li>
+				<li>6<span>服务</span></li>
+				<li>7<span>图书</span></li>
+				<li>8<span>母婴</span></li>
+				<li>9<span>家具</span></li>
+				<li>10<span>运动</span></li>
+				<li>11<span>食品</span></li>				
+			</ul>
+			<div id="top">top<i>顶部</i></div>
+			
+		</div>
+		<div id="header" style="background: #CCCCCC;">
+			header
+		</div>
+		<div class="fl" style="background: #f90;">
+			服饰
+		</div>
+		<div class="fl" style="background: #FF0000;">
+			美妆
+		</div>
+		<div class="fl" style="background: #FFFF00;">
+			手机
+		</div>
+		<div class="fl" style="background: #FF6000;">
+			家电
+		</div>
+		<div class="fl" style="background: #FFF6EC;">
+			数码
+		</div>
+		<div class="fl" style="background:#777777;">
+			服务
+		</div>
+		<div class="fl" style="background: #0089CF;">
+			图书
+		</div>
+		<div class="fl" style="background: #E9E9E9;">
+			母婴
+		</div>
+		<div class="fl" style="background: #FFF3F3;">
+			居家
+		</div>
+		<div class="fl" style="background: #ddd;">
+			运动
+		</div>
+		<div class="fl" style="background: #FFADB0;">
+			食品
+		</div>
+		<div id="footer" style="background: #0089CF;">footer</div>
+	</body>
+
+</html>
+
+<script type="text/javascript">
+	var header = document.getElementById("header");
+	var fl = document.getElementsByClassName("fl");
+	var footer = document.getElementById("footer");
+	var ul = document.getElementById("ul");
+	var li = ul.getElementsByTagName("li");
+	var span = ul.getElementsByTagName("span");
+	var Top = document.getElementById("top");
+	window.addEventListener("scroll", function() {
+		var scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop;
+//		console.log(scrollTop)
+		if(scrollTop >= 650) {
+			ul.parentNode.style.display = "block";
+		}
+		if(scrollTop < 650) {
+			ul.parentNode.style.display = "none";
+		}
+		for(i in fl) {
+			if(fl[i].offsetTop - scrollTop > -300) {
+				that = span[i];
+				for(var j = 0; j < span.length; j++) {
+					if(span[j] != that) {
+						span[j].style.display = "none"
+					}
+				}
+				span[i].style.display = "block";
+				return false
+			}
+		}
+	}, 0)
+
+	for(var i = 0; i < li.length; i++) {
+		(function(index) {
+			li[index].addEventListener("mouseover", function() {
+				span[index].style.display = "block";
+			}, false)
+		})(i)
+	}
+	for(var i = 0; i < li.length; i++) {
+		(function(index) {
+			li[index].addEventListener("mouseout", function() {
+				span[index].style.display = "none";
+			}, false)
+		})(i)
+	}
+	for(var i = 0; i < li.length; i++) {
+		(function(index) {
+			li[index].onclick = function() {
+				span[index].style.display = "block";
+				document.body.scrollTop = index * 600 + 650;				
+			}
+			
+		})(i)
+	}
+
+	Top.addEventListener("click", function(){
+ 		document.body.scrollTop = 0;				
+	}, false)
+</script>
