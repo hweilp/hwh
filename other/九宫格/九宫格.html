@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>		
+		<style>
+			*{
+				margin:0;
+				padding:0;
+			}
+			body{
+			    -webkit-user-select:none;
+			    -moz-user-select:none;
+			    -ms-user-select:none;
+			    user-select:none;
+			}
+			#box{
+				position:absolute;
+				left:0;
+				top:0;
+				right:0;
+				bottom:0;
+				margin:auto;
+				width:450px;
+				height:450px;
+				border:1px solid black;
+			}
+			#box div{
+				-webkit-box-sizing:border-box;
+				-webkit-box-shadow:inset 0px 0px 0px 3px orange;
+				position:absolute;
+				width:150px;
+				height:150px;
+				text-align:center;
+				line-height:150px;
+				font-size:30px;
+				background:purple;
+				cursor:move;
+			}
+		</style>
+		<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+	</head>
+	<body>
+		<div id="box">
+			<div>0</div>
+			<div>1</div>
+			<div>2</div>
+			<div>3</div>
+			<div>4</div>
+			<div>5</div>
+			<div>6</div>
+			<div>7</div>
+			<div>8</div>
+		</div>
+		
+		<script type="text/javascript">
+			var box = $("#box");
+			var boxItems = $("#box div");
+			var initFlag = true;
+			var pos = [{
+				left:0,
+				top:0,
+				index:0
+			},{
+				left:150,
+				top:0,
+				index:1
+			},{
+				left:300,
+				top:0,
+				index:2
+			},{
+				left:0,
+				top:150,
+				index:3
+			},{
+				left:150,
+				top:150,
+				index:4
+			},{
+				left:300,
+				top:150,
+				index:5
+			},{
+				left:0,
+				top:300,
+				index:6
+			},{
+				left:150,
+				top:300,
+				index:7
+			},{
+				left:300,
+				top:300,
+				index:8
+			}]
+			function putBox(pos,index){
+				if(!initFlag){
+					if(index){
+						boxItems.eq(index).css("z-index",88);
+					}
+					boxItems.each(function(ind,item){
+						$(item).animate({
+							left:pos[ind].left,
+							top:pos[ind].top
+						},500,function(){
+							$(item).css("z-index","1");
+						}).attr("index",pos[ind].index);
+					})
+				}else{
+					initFlag = false;
+					boxItems.each(function(ind,item){
+						$(item).css({
+							left:pos[ind].left,
+							top:pos[ind].top
+						}).attr("index",pos[ind].index);
+					})
+				}
+			}
+			putBox(pos);
+			
+			boxItems.each(function(index,item){
+				$(item).attr("index",index);
+			})
+			
+			boxItems.on("mousedown",function(e){
+				var oX = $(this).position().left;
+				var oY = $(this).position().top;
+				var parentX = e.offsetX;
+				var parentY = e.offsetY;
+				var boxX,boxY;
+				$(this).on("mousemove",draging)
+				function draging(e){
+					var mouseX = e.clientX-box.offset().left-1;
+					var mouseY = e.clientY-box.offset().top-1;
+					boxX = mouseX - parentX;
+					boxY = mouseY - parentY;
+					$(this).css({
+						left:boxX,
+						top:boxY,
+						zIndex:99
+					})
+				}
+				$(this).on("mouseup",drop);
+				function drop(){
+					var dropX = $(this).position().left;
+					var dropY = $(this).position().top;
+					console.log(dropX+":"+dropY)
+					var moveIndex = $(this).attr("index");
+					var moveLeft = pos[moveIndex].left;
+					var moveTop = pos[moveIndex].top;
+					$(this).off("mousemove",draging);
+					var centerX = boxX + 75;
+					var centerY = boxY + 75;
+					for(var i=0;i<pos.length;i++){
+						if(centerX>=pos[i].left&&centerX<=(pos[i].left+150)&&centerY>=pos[i].top&&centerY<=(pos[i].top+150)){
+							var repIndex = i;
+							var repLeft = pos[i].left;
+							var repTop = pos[i].top;
+							pos[repIndex].left = moveLeft;
+							pos[repIndex].top = moveTop;
+							pos[moveIndex].left = repLeft;
+							pos[moveIndex].top = repTop;
+							putBox(pos,repIndex+"");
+							break;
+						}
+						if(i==pos.length-1){
+							putBox(pos);
+						}
+					}
+					$(this).off("mouseup",drop);
+				}
+			})
+		</script>
+	</body>
+</html>

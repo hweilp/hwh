@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+
+	<body>
+
+	</body>
+
+</html>
+<script type="text/javascript">
+//	var xmlhttp = new XMLHttpRequest();
+//	xmlhttp.onreadystatechange = function() {
+//	    if (this.readyState == 4 && this.status == 200) {
+//	        myArr = JSON.parse(this.responseText);
+//	        document.getElementById("demo").innerHTML = myArr[1];
+//	    }
+//	};
+//	xmlhttp.open("GET", "/try/ajax/json_demo_array.txt", true);
+//	xmlhttp.send();
+	/* 封装ajax函数
+		 2  * @param {string}opt.type http连接的方式，包括POST和GET两种方式
+		 3  * @param {string}opt.url 发送请求的url
+		 4  * @param {boolean}opt.async 是否为异步请求，true为异步的，false为同步的
+		 5  * @param {object}opt.data 发送的参数，格式为对象类型
+		 6  * @param {function}opt.success ajax发送并接收成功调用的回调函数
+		 7  */
+	function ajax(opt) {
+		opt = opt || {};
+		opt.method = opt.method.toUpperCase() || 'POST';
+		opt.url = opt.url || '';
+		opt.async = opt.async || true;
+		opt.data = opt.data || null;
+		opt.success = opt.success || function() {};
+		var xmlHttp = null;
+		if(XMLHttpRequest) {
+			xmlHttp = new XMLHttpRequest();
+		} else {
+			xmlHttp = new ActiveXObject('Microsoft.XMLHTTP');
+		}
+		var params = [];
+		for(var key in opt.data) {
+			params.push(key + '=' + opt.data[key]);
+		}
+		var postData = params.join('&');
+		if(opt.method.toUpperCase() === 'POST') {
+			xmlHttp.open(opt.method, opt.url, opt.async);
+			xmlHttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded;charset=utf-8');
+			xmlHttp.send(postData);
+		} else if(opt.method.toUpperCase() === 'GET') {
+			xmlHttp.open(opt.method, opt.url + '?' + postData, opt.async);
+			xmlHttp.send(null);
+		}
+		xmlHttp.onreadystatechange = function() {
+			if(xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+				opt.success(xmlHttp.responseText);
+			}
+		};
+	}
+	ajax({
+		method: 'POST',
+		url: 'test.php',
+		data: {
+			name1: 'value1',
+			name2: 'value2'
+		},
+		success: function(response) {
+			console.log(response);
+		}
+	});
+
+	function ajax(info) {
+		var url = info.url;
+		var type = info.type || "get";
+		var data = info.data || "";
+		var fn = info.success || null;
+		if(new XMLHttpRequest) {
+			var xhr = new XMLHttpRequest();
+		} else {
+			var xhr = new ActiveXObject("Microsoft.XMLHTTP");
+		}
+		if(type == "get") {
+			xhr.open(type, url + "?" + data + "&t=" + new Date().getTime, true);
+			xhr.send();
+		} else {
+			xhr.open(type, url, true);
+			xhr.send(data);
+		}
+		xhr.onload = function() {
+			if(fn) {
+				fn(xhr.responseText);
+			}
+		}
+	}
+	
+//	function ajax(info){
+//		var url = info.url || "";
+//		var type = "GET" || info.type;
+//		var data = info.data || "";
+//		var fun = info.success || null; 
+//		
+//		
+//		if( new XMLHttpRequest) {
+//			var xhr = new XMLHttpRequest();
+//		}else{
+//			var xhr = new ActiveXObject("Microsoft XMLHttp");
+//		}
+//		if(type ==  "GET"){
+//			xhr.open(type, url + "?" + data, true );
+//			xhr.send();
+//		}else{
+//			xhr.open(type, url, true);
+//			xhr.send();
+//		}
+//		xhr.onreadystatechange = function(){
+//			if(xhr.readyState == 4 && xhr.status == 200){
+//				fun(xhr.responseText);
+//			}
+//		}
+//	}
+</script>
