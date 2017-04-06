@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			*{
+				margin:0;
+				padding:0;
+			}
+			#myCanvas{
+				display:block;
+				border:1px solid black;
+				width:600px;
+				height:600px;
+				margin:0 auto;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="myCanvas" width="600" height="600"></canvas>
+		<script>
+			var myCanvas = document.getElementById("myCanvas");
+//			获取canvas对象
+			var ctx = myCanvas.getContext("2d");
+			
+			ctx.save();
+			ctx.translate(100,100);
+			ctx.fillRect(0,0,100,100);
+			ctx.restore();
+			ctx.fillStyle = "yellow";
+			ctx.fillRect(0,0,100,100);
+			
+
+//			ctx.rotate(Math.PI/4);
+//			ctx.fillRect(250,250,100,100);
+			
+//			function rotate(angle){
+//				ctx.clearRect(0,0,600,600)
+//				ctx.save();
+//				ctx.translate(300,300);
+//				ctx.rotate(angle);
+//				ctx.fillRect(-50,-50,100,100);
+//				ctx.restore();
+//			}
+//			
+//			var init = 0;
+//			var step = Math.PI/100;
+//			var time = setInterval(function(){
+//				init += step;
+//				rotate(init);
+//			},1000/60)
+			
+//			ctx.scale(2,2);
+//			ctx.translate(100,100);
+//			ctx.fillRect(0,0,100,100);
+
+
+//			var gradient = ctx.createLinearGradient(0,0,600,600);
+//			gradient.addColorStop(0,"red");
+//			gradient.addColorStop(0.5,"yellow");
+//			gradient.addColorStop(1,"blue");
+//			
+//			ctx.fillStyle = gradient;
+//			ctx.fillRect(0,0,300,300);
+
+
+//			var gradient = ctx.createRadialGradient(300,300,100,300,300,300);
+//			gradient.addColorStop(0,"red");
+//			gradient.addColorStop(0.5,"yellow");
+//			gradient.addColorStop(1,"blue");
+//			
+//			ctx.fillStyle = gradient;
+//			ctx.fillRect(0,0,600,600);
+
+//			ctx.globalCompositeOperation = "xor";
+//			ctx.fillStyle="red";
+//			ctx.fillRect(200,200,150,150);
+//			ctx.fillStyle = "yellow";
+//			ctx.fillRect(250,250,150,150);
+		</script>
+	</body>
+</html>

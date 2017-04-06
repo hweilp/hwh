@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			#myCanvas{
+				border:1px solid black;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="myCanvas" width="500" height="500"></canvas>
+		<script>
+			var myCanvas = document.getElementById("myCanvas");
+//			获取canvas对象
+			var ctx = myCanvas.getContext("2d");
+			
+//			{x=a+Rcos0
+//			{y=b+Rsin0 (0为参数)
+			
+			ctx.beginPath();
+			ctx.strokeStyle = "yellow"
+			for(var i=0;i<11;i+=2){
+				var oX = 250 + 200*Math.cos(i*2*Math.PI/5-Math.PI/2);
+				var oY = 250 + 200*Math.sin(i*2*Math.PI/5-Math.PI/2);
+				if(i==0){
+					console.log({x:oX,y:oY});
+					ctx.moveTo(oX,oY);
+				}else{
+					ctx.lineTo(oX,oY);
+				}
+				ctx.stroke();
+			}
+			ctx.closePath();
+			
+			ctx.clearRect(100,100,200,200);
+		</script>
+	</body>
+</html>

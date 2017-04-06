@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			#myCanvas{
+				border:1px solid black;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="myCanvas" width="500" height="500"></canvas>
+		<script>
+			var myCanvas = document.getElementById("myCanvas");
+//			获取canvas对象
+			var ctx = myCanvas.getContext("2d");
+			
+			ctx.lineWidth = "10";
+			
+//			路径开始
+			ctx.beginPath();
+//			移动到某个点
+			ctx.moveTo(100,100);
+//			连线到某个点
+			ctx.lineTo(300,100);
+			ctx.lineTo(100,400);
+//			ctx.lineTo(100,100);
+//			路径结束 同时会闭合起始点和结束点
+			ctx.closePath();
+			ctx.stroke();
+
+		</script>
+	</body>
+</html>

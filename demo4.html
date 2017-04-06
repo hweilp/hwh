@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			*{
+				margin:0;
+				padding:0;
+			}
+			#myCanvas{
+				border:1px solid black;
+			}
+			#drawBoard{
+				position:relative;
+				/*overflow:hidden;*/
+				width:502px;
+				height:502px;
+			}
+			.eraserBox{
+				position:absolute;
+				left:0;
+				top:0;
+				display:none;
+				width:10px;
+				height:10px;
+				border:1px solid black;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="drawBoard">
+			<div class="eraserBox"></div>
+			<canvas id="myCanvas" width="500" height="500"></canvas>
+		</div>
+		<button class="pan">绘制</button>
+		<button class="eraser">橡皮檫</button>
+		<script>
+			var pan = document.getElementsByClassName("pan")[0];
+			var eraser = document.getElementsByClassName("eraser")[0];
+			var eraserBox = document.getElementsByClassName("eraserBox")[0];
+			var myCanvas = document.getElementById("myCanvas");
+//			获取canvas对象
+			var ctx = myCanvas.getContext("2d");
+			
+			pan.onclick = function(){
+				eraserBox.style.display = "";
+				myCanvas.onmousedown = function(e){
+					var e = e||window.event;
+					var oX = e.clientX;
+					var oY = e.clientY;
+					ctx.beginPath();
+					ctx.moveTo(oX,oY);
+					this.onmousemove = function(e){
+						var oX = e.clientX;
+						var oY = e.clientY;
+						ctx.lineTo(oX,oY);
+						ctx.stroke();
+					}
+					this.onmouseup = function(){
+						this.onmousemove = null;
+						ctx.closePath();
+					}
+				}		
+			}
+			
+			eraser.onclick = function(){
+				eraserBox.style.display = "block";
+				myCanvas.addEventListener("mousemove",function(e){
+					var e = e||window.event;
+					var oX = e.clientX;
+					var oY = e.clientY;
+					eraserBox.style.left = oX-5+"px";
+					eraserBox.style.top = oY-5+"px";
+				},false);
+				eraserBox.onmousedown = function(e){
+					var e = e||window.event;
+					var oX = this.offsetLeft;
+					var oY = this.offsetTop;
+					console.log(oX+":"+oY)
+					ctx.clearRect(oX,oY,10,10);
+					myCanvas.addEventListener("mousemove",function(e){
+						var oX = eraserBox.offsetLeft;
+						var oY = eraserBox.offsetTop;
+						ctx.clearRect(oX,oY,10,10);
+					},false) 
+					eraserBox.onmouseup = function(e){
+						myCanvas.onmousemove = null;
+					}
+				}
+			}
+		</script>
+	</body>
+</html>
